@@ -1,42 +1,27 @@
 import React, { useState } from 'react';
 
-const  CounterComponent = () => {
-    const [counter,setCounter] = useState(0);
-    const [imageUrl,setImageUrl] = useState('http://picsum.photos/200');
-    const [tags,setTags] = useState(['tag1','tag2','tag3','tag4'])
+const  CounterComponent = ({CountValue=0,onDelete,children,onDecr,onIncr,countObject}) => {
 
-    const IncrCount = () => {
-       setCounter(counter+1)
-    }
 
     const getbadgeClasses = () => {
         let classes="badge bg-";
-        classes += counter > 0 ? 'primary' : 'warning';
+        classes += CountValue > 0 ? 'primary' : 'warning';
         return classes;
     }
     
     const formatCount  = () => {
-        return counter === 0 ? 'zero' : counter;
-    }
-
-    const renderTags = () => {
-        if(tags.length < 1) return <p> no tags found </p>;
-        return <ul className='list-group'>
-        {tags.map(tag =>   <li key={tag} className='list-group-item'>{tag}</li> )}
-    </ul>
+        return CountValue === 0 ? 'zero' : CountValue;
     }
 
 
+    
         return (
         <>
-            <img src={imageUrl}  alt=""/>
-            <span className={getbadgeClasses()}>{formatCount()}</span>
-            <button type="button" className="btn btn-success" onClick={() => IncrCount()}>Increment</button>
-            {/* {renderTags()} */}
-
-            {tags.length < 1 && <p> no tags found </p>};
-            {tags.length > 1 && tags.map(tag =>   <li key={tag} className='list-group-item'>{tag}</li> )}
-
+            {children}
+            <button type="button" className="btn btn-info btn-sm" onClick={() => onDecr(countObject)}>Decrement</button>
+            <span style={{marginLeft: 20,marginRight: 20,fontSize: 20}} className={getbadgeClasses()}>{formatCount()}</span>
+            <button type="button" className="btn btn-dark btn-sm" onClick={() => onIncr(countObject)}>Increment</button>
+            <button onClick={() => onDelete()} type="button" className='btn btn-danger btn-sm'>Delete</button>
         </>
         );
     
